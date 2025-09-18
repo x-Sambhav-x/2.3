@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SVG Drawing Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    #drawingArea {
+      border: 2px solid black;
+      background-color: #f9f9f9;
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+  <h2>SVG Drawing Tool</h2>
+  <svg id="drawingArea" width="600" height="400"></svg>
+
+  <script>
+    const svg = document.getElementById("drawingArea");
+    let drawing = false;
+    let currentShape = null;
+
+    svg.addEventListener("mousedown", (e) => {
+      drawing = true;
+
+      // Get starting mouse position
+      const startX = e.offsetX;
+      const startY = e.offsetY;
+
+      // Create a new line
+      currentShape = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      currentShape.setAttribute("x1", startX);
+      currentShape.setAttribute("y1", startY);
+      currentShape.setAttribute("x2", startX);
+      currentShape.setAttribute("y2", startY);
+      currentShape.setAttribute("stroke", "blue");
+      currentShape.setAttribute("stroke-width", 2);
+
+      svg.appendChild(currentShape);
+    });
+
+    svg.addEventListener("mousemove", (e) => {
+      if (!drawing || !currentShape) return;
+
+      // Update line end coordinates dynamically
+      currentShape.setAttribute("x2", e.offsetX);
+      currentShape.setAttribute("y2", e.offsetY);
+    });
+
+    svg.addEventListener("mouseup", () => {
+      drawing = false;
+      currentShape = null;
+    });
+
+    svg.addEventListener("mouseleave", () => {
+      drawing = false;
+      currentShape = null;
+    });
+  </script>
+</body>
+</html>
